@@ -1,8 +1,10 @@
 import Head from 'next/head';
+import { Fragment } from 'react';
 import { useAuth } from '../lib/auth';
 
 const Home = () => {
   const auth = useAuth();
+  // window.createFakeUser = auth?.createFakeUser;
 
   return (
     <div className="container">
@@ -20,7 +22,10 @@ const Home = () => {
         {auth?.user ? (
           <button onClick={(e) => auth.signout()}>Sign Out</button>
         ) : (
-          <button onClick={(e) => auth.signinWithGithub()}>Sign In</button>
+          <Fragment>
+            <button onClick={(e) => auth.signinWithGithub()}>Sign In (GitHub)</button>
+            <button onClick={(e) => auth.signinWithEmailPassword()}>Sign In (Email)</button>
+          </Fragment>
         )}
       </main>
 
@@ -110,7 +115,7 @@ const Home = () => {
           padding: 0.75rem;
           font-size: 1.1rem;
           font-family: Menlo, Monaco, Lucida Console, Liberation Mono,
-            DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
+          DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
         }
 
         .grid {
@@ -167,8 +172,8 @@ const Home = () => {
           padding: 0;
           margin: 0;
           font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-            Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
-            sans-serif;
+          Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
+          sans-serif;
         }
 
         * {
