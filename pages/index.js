@@ -1,7 +1,18 @@
 import Head from 'next/head';
 import { Fragment } from 'react';
 import { useAuth } from '../lib/auth';
-import { Button, ButtonGroup } from "@chakra-ui/react"
+import React from 'react'
+import {
+  ChakraProvider,
+  Container,
+  FormControl,
+  FormLabel,
+  Input,
+  FormErrorMessage,
+  Button
+} from '@chakra-ui/react';
+import { CheckIcon } from '@chakra-ui/icons'
+
 
 const Home = () => {
   const auth = useAuth();
@@ -26,10 +37,39 @@ const Home = () => {
           <Fragment>
             <button onClick={(e) => auth.signinWithGithub()}>Sign In (GitHub)</button>
             <button onClick={(e) => auth.signinWithEmailPassword()}>Sign In (Email)</button>
-            <Button colorScheme="orange">Click me</Button>
           </Fragment>
         )}
+
+<ChakraProvider resetCSS>
+    <Container display="block" mt="25px">
+      <FormControl isRequired>
+        <FormLabel>email</FormLabel>
+        <Input placeholder="Enter your email" />
+        <FormErrorMessage>Error message</FormErrorMessage>
+      </FormControl>
+      <FormControl isRequired mb="25px" mt="25px">
+        <FormLabel>password</FormLabel>
+        <Input placeholder="Choose your password" />
+        <FormErrorMessage>Error message</FormErrorMessage>
+      </FormControl>
+      <Button
+        variant="solid"
+        size="md"
+        colorScheme="purple"
+        display="flex"
+        rightIcon={<CheckIcon />}
+        flexDirection="row"
+        justifyContent="flex-start"
+        boxShadow={10}
+      >
+        Sign in
+      </Button>
+    </Container>
+  </ChakraProvider>
+
       </main>
+
+      
 
       <footer>
         <a
