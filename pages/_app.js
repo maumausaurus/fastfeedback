@@ -1,9 +1,13 @@
+import * as React from "react"
 import { ProvideAuth } from '../lib/auth';
+import { ChakraProvider } from "@chakra-ui/react"
 
 function MyApp({ Component, pageProps }) {
   return (
     <ProvideAuth>
-      <Component {...pageProps} />
+      <ChakraProvider>
+        <Component {...pageProps} />
+      </ChakraProvider>
     </ProvideAuth>
   );
 }
