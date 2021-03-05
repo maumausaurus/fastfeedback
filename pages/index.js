@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 import { useAuth } from '../lib/auth';
 import React from 'react'
 import {
@@ -15,8 +15,33 @@ import { CheckIcon } from '@chakra-ui/icons'
 
 
 const Home = () => {
+
+  const [email, setEmail] = useState(undefined);
+  const [password, setPassword] = useState(undefined);
+  const [logInError, setLogInError] = useState(undefined);
+  let [isSigningUp, setIsSigningUp] = useState(false);
+
+  console.log("email:", email, "password:", password);
+  console.log(logInError);
+  console.log("isSigningUp", isSigningUp)
+
   const auth = useAuth();
-  // window.createFakeUser = auth?.createFakeUser;
+
+  const onSubmit = () => {
+    if (isSigningUp) {
+      try {
+        auth.createUser(email, password)
+      } catch (e) {
+        setLogInError(e);
+      }
+    } else {
+      try {
+        auth.signinWithEmailPassword(email, password)
+      } catch (e) {
+        setLogInError(e);
+      }
+    }
+  }
 
   return (
     <div className="container">
@@ -31,45 +56,82 @@ const Home = () => {
         <p className="description">
           Current user: <code>{auth?.user ? auth.user.email : 'None'}</code>
         </p>
-        {auth?.user ? (
-          <button onClick={(e) => auth.signout()}>Sign Out</button>
-        ) : (
-          <Fragment>
-            <button onClick={(e) => auth.signinWithGithub()}>Sign In (GitHub)</button>
-            <button onClick={(e) => auth.signinWithEmailPassword()}>Sign In (Email)</button>
-          </Fragment>
-        )}
 
-<ChakraProvider resetCSS>
-    <Container display="block" mt="25px">
-      <FormControl isRequired>
-        <FormLabel>email</FormLabel>
-        <Input placeholder="Enter your email" />
-        <FormErrorMessage>Error message</FormErrorMessage>
-      </FormControl>
-      <FormControl isRequired mb="25px" mt="25px">
-        <FormLabel>password</FormLabel>
-        <Input placeholder="Choose your password" />
-        <FormErrorMessage>Error message</FormErrorMessage>
-      </FormControl>
-      <Button
-        variant="solid"
-        size="md"
-        colorScheme="purple"
-        display="flex"
-        rightIcon={<CheckIcon />}
-        flexDirection="row"
-        justifyContent="flex-start"
-        boxShadow={10}
-      >
-        Sign in
+        <ChakraProvider resetCSS>
+          <Container>
+            {auth?.user ? (
+              <button onClick={(e) => auth.signout()}>Sign Out</button>
+            ) : (
+                <Fragment>
+                  <Button
+                    variant="solid"
+                    size="md"
+                    mr="20px"
+                    colorScheme="blackAlpha"
+                    onClick={(e) => auth.signinWithGithub()}>
+                    Sign in (GitHub)
+                  </Button>
+                  <Button
+                    variant="solid"
+                    size="md"
+                    mr="20px"
+                    colorScheme="blackAlpha"
+                    onClick={(e) => auth.signinWithEmailPassword()}>
+                    Sign in (email)
+                  </Button>
+                  <Button
+                    variant="solid"
+                    size="md"
+                    colorScheme="purple"
+                    onClick={(e) => setIsSigningUp(true)}>
+                    Sign up
+                  </Button>
+                </Fragment>
+              )}
+
+          </Container>
+
+          <Container display="block" mt="25px">
+            <FormControl isRequired>
+              <FormLabel>email</FormLabel>
+              <Input
+                placeholder="Enter your email"
+
+                onChange={(event) => {
+                  setEmail(event.target.value);
+                }}
+              />
+              <FormErrorMessage>Error message</FormErrorMessage>
+            </FormControl>
+            <FormControl isRequired mb="25px" mt="25px">
+              <FormLabel>password</FormLabel>
+              <Input
+                placeholder="Choose your password"
+                onChange={(event) => {
+                  setPassword(event.target.value);
+                }}
+              />
+              <FormErrorMessage>Error message</FormErrorMessage>
+            </FormControl>
+            <Button
+              variant="solid"
+              size="md"
+              colorScheme="purple"
+              display="flex"
+              rightIcon={<CheckIcon />}
+              flexDirection="row"
+              justifyContent="flex-start"
+              boxShadow={10}
+              onClick={onSubmit}
+            >
+              Submit
       </Button>
-    </Container>
-  </ChakraProvider>
+          </Container>
+        </ChakraProvider>
 
       </main>
 
-      
+
 
       <footer>
         <a
