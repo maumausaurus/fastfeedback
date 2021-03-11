@@ -14,6 +14,7 @@ import {
 import { CheckIcon } from '@chakra-ui/icons'
 
 
+
 const Home = () => {
 
   const [email, setEmail] = useState(undefined);
