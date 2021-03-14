@@ -5,43 +5,15 @@ import React from 'react'
 import {
   ChakraProvider,
   Container,
-  FormControl,
-  FormLabel,
-  Input,
-  FormErrorMessage,
   Button
 } from '@chakra-ui/react';
 import { CheckIcon } from '@chakra-ui/icons'
+import ModalSignIn from '../components/ModalSignIn'
+import ModalSignUp from '../components/ModalSignUp'
 
 
 const Home = () => {
-
-  const [email, setEmail] = useState(undefined);
-  const [password, setPassword] = useState(undefined);
-  const [logInError, setLogInError] = useState(undefined);
-  let [isSigningUp, setIsSigningUp] = useState(false);
-
-  console.log("email:", email, "password:", password);
-  console.log(logInError);
-  console.log("isSigningUp", isSigningUp)
-
   const auth = useAuth();
-
-  const onSubmit = () => {
-    if (isSigningUp) {
-      try {
-        auth.createUser(email, password)
-      } catch (e) {
-        setLogInError(e);
-      }
-    } else {
-      try {
-        auth.signinWithEmailPassword(email, password)
-      } catch (e) {
-        setLogInError(e);
-      }
-    }
-  }
 
   return (
     <div className="container">
@@ -59,79 +31,30 @@ const Home = () => {
 
         <ChakraProvider resetCSS>
           <Container>
+            <div>
+              <ModalSignIn/>
+              <Button
+                variant="solid"
+                size="md"
+                mr="20px"
+                colorScheme="blackAlpha"
+                onClick={(e) => auth.signinWithGithub()}>
+                Sign in (GitHub)
+                </Button>
+              <ModalSignUp />
+            </div>
+
+          </Container>
+          <Container>
             {auth?.user ? (
               <button onClick={(e) => auth.signout()}>Sign Out</button>
             ) : (
-                <Fragment>
-                  <Button
-                    variant="solid"
-                    size="md"
-                    mr="20px"
-                    colorScheme="blackAlpha"
-                    onClick={(e) => auth.signinWithGithub()}>
-                    Sign in (GitHub)
-                  </Button>
-                  <Button
-                    variant="solid"
-                    size="md"
-                    mr="20px"
-                    colorScheme="blackAlpha"
-                    onClick={(e) => auth.signinWithEmailPassword()}>
-                    Sign in (email)
-                  </Button>
-                  <Button
-                    variant="solid"
-                    size="md"
-                    colorScheme="purple"
-                    onClick={(e) => setIsSigningUp(true)}>
-                    Sign up
-                  </Button>
-                </Fragment>
-              )}
-
-          </Container>
-
-          <Container display="block" mt="25px">
-            <FormControl isRequired>
-              <FormLabel>email</FormLabel>
-              <Input
-                placeholder="Enter your email"
-
-                onChange={(event) => {
-                  setEmail(event.target.value);
-                }}
-              />
-              <FormErrorMessage>Error message</FormErrorMessage>
-            </FormControl>
-            <FormControl isRequired mb="25px" mt="25px">
-              <FormLabel>password</FormLabel>
-              <Input
-                placeholder="Choose your password"
-                onChange={(event) => {
-                  setPassword(event.target.value);
-                }}
-              />
-              <FormErrorMessage>Error message</FormErrorMessage>
-            </FormControl>
-            <Button
-              variant="solid"
-              size="md"
-              colorScheme="purple"
-              display="flex"
-              rightIcon={<CheckIcon />}
-              flexDirection="row"
-              justifyContent="flex-start"
-              boxShadow={10}
-              onClick={onSubmit}
-            >
-              Submit
-      </Button>
+              <Fragment>
+              </Fragment>
+            )}
           </Container>
         </ChakraProvider>
-
       </main>
-
-
 
       <footer>
         <a
