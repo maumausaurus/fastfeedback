@@ -22,12 +22,6 @@ const ModalSignIn = () => {
               closeModal={onClose}
             />
           </ModalBody>
-
-          <ModalFooter>
-            <Button colorScheme="purple" mr={3} onClick={onClose}>
-              Close
-            </Button>
-          </ModalFooter>
         </ModalContent>
       </Modal>
     </>
