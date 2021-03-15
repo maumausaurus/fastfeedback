@@ -5,11 +5,14 @@ import React from 'react'
 import {
   ChakraProvider,
   Container,
-  Button
+  Button,
+  Flex
 } from '@chakra-ui/react';
 import { CheckIcon } from '@chakra-ui/icons'
 import ModalSignIn from '../components/ModalSignIn'
 import ModalSignUp from '../components/ModalSignUp'
+import EmptyState from '../components/EmptyState';
+import DashboardShell from '../components/DashboardShell';
 
 
 const Home = () => {
@@ -17,34 +20,28 @@ const Home = () => {
 
   return (
     <div className="container">
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main>
-        <h1 className="title">Fast Feedback</h1>
-
-        <p className="description">
-          Current user: <code>{auth?.user ? auth.user.email : 'None'}</code>
+        <p>
+          Current user: {auth?.user ? auth.user.email : 'None'}
         </p>
 
-        <ChakraProvider resetCSS>
-          <Container>
-            <div>
-              <ModalSignIn/>
-              <Button
-                variant="solid"
-                size="md"
-                mr="20px"
-                colorScheme="blackAlpha"
-                onClick={(e) => auth.signinWithGithub()}>
-                Sign in (GitHub)
-                </Button>
-              <ModalSignUp />
-            </div>
-
-          </Container>
+          <Flex>
+            {auth?.user ? (
+              <Fragment></Fragment>
+            ) : (
+              <div>
+                <ModalSignIn />
+                <Button
+                  variant="solid"
+                  size="md"
+                  mr="20px"
+                  colorScheme="blackAlpha"
+                  onClick={(e) => auth.signinWithGithub()}>
+                  Sign in (GitHub)
+               </Button>
+                <ModalSignUp />
+              </div>
+            )}
+          </Flex>
           <Container>
             {auth?.user ? (
               <button onClick={(e) => auth.signout()}>Sign Out</button>
@@ -53,18 +50,6 @@ const Home = () => {
               </Fragment>
             )}
           </Container>
-        </ChakraProvider>
-      </main>
-
-      <footer>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by <img src="/vercel.svg" alt="Vercel Logo" />
-        </a>
-      </footer>
 
       <style jsx>{`
         .container {
