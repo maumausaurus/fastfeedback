@@ -4,15 +4,12 @@ import { useState } from 'react';
 
 const AddSiteModal = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
-    // const { register, handleSubmit, watch, errors } = useForm();
-
-    const [siteName, setSiteName] = useState(undefined);
-    const [siteLink, setSiteLink] = useState(undefined);
-
-    const onSubmit = () => {
+    const { register, handleSubmit, watch, errors } = useForm();
+    
+    const onSubmit = (data) => {
         //create site 
         try {
-            console.log("siteName :",siteName,"siteLink :",siteLink)
+            console.log("data :",data)
             // créer une entrée dans la base de données en passant les valeurs de siteName et siteLink
             // createSite(siteName,siteLink);
             
@@ -32,7 +29,9 @@ const AddSiteModal = () => {
 
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
-                <ModalContent>
+                <ModalContent as ="form"
+                    onSubmit={handleSubmit(onSubmit)}
+                >
                     <ModalHeader>Add site</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
@@ -41,18 +40,17 @@ const AddSiteModal = () => {
                                 <FormLabel>Name</FormLabel>
                                 <Input 
                                     placeholder="Name of your site" 
-                                    onChange={(event) => {
-                                        setSiteName(event.target.value);
-                                    }}/>
+                                    name="siteName"
+                                    ref={register ({ required : true })}
+                                    />
                                 <FormErrorMessage>Error message</FormErrorMessage>
                             </FormControl>
                             <FormControl>
                                 <FormLabel>Site url</FormLabel>
                                 <Input 
                                     placeholder="https://greatstuff.com" 
-                                    onChange={(event) => {
-                                        setSiteLink(event.target.value);
-                                    }}
+                                    name="siteLink"
+                                    ref={register ({ required : true })}
                                     />
                                 <FormErrorMessage>Error message</FormErrorMessage>
                             </FormControl>
@@ -60,10 +58,10 @@ const AddSiteModal = () => {
                     </ModalBody>
                     <ModalFooter>
                         <Button 
+                            type="submit"
                             variant="solid" 
                             size="md" 
                             colorScheme="purple"
-                            onClick={onSubmit}
                             >
                             Create
                             </Button>
