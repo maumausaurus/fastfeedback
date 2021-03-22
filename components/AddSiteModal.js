@@ -1,4 +1,4 @@
-import { Button, Container, FormControl, FormLabel, Input, FormErrorMessage, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure } from '@chakra-ui/react';
+import { useToast, Button, Container, FormControl, FormLabel, Input, FormErrorMessage, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure } from '@chakra-ui/react';
 import { useForm } from "react-hook-form";
 // import { useState } from 'react';
 import firebase from '../lib/firebase';
@@ -9,6 +9,7 @@ console.log(firestore)
 const AddSiteModal = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { register, handleSubmit, watch, errors } = useForm();
+    const toast = useToast();
 
     const onSubmit = async (data) => {
         //create site 
@@ -20,7 +21,13 @@ const AddSiteModal = () => {
                 link: data.siteLink,
                 name: data.siteName
             });
-            // createSite(siteName,siteLink);
+            toast({
+                title: "Success !",
+                description: "We've created your site.",
+                status: "success",
+                duration: 5000,
+                isClosable: true,
+              })
 
         } catch (error) {
             console.log(error)
