@@ -1,13 +1,16 @@
 import firebase from './lib/firebase';
 
+
 const firestore = firebase.firestore()
 
-export const createSite = async (data) => {
+export const createSite = async (data,userUid) => {
 
-        const res = await firestore.collection('sites').add({
-            link: data.siteLink,
-            name: data.siteName,
-            //owner
-        });
-       
+    const siteToCreate = {
+        name: data.siteName,
+        link: data.siteLink,
+        owner: userUid
+    }
+
+    const res = await firestore.collection('sites').add(siteToCreate);
+
 }

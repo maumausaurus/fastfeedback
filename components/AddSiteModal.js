@@ -3,7 +3,8 @@ import { useForm } from "react-hook-form";
 // import { useState } from 'react';
 import firebase from '../lib/firebase';
 import { createSite } from '../db';
-//useAuth
+import { useAuth } from '../lib/auth';
+
 
 const firestore = firebase.firestore()
 console.log(firestore)
@@ -12,21 +13,25 @@ const AddSiteModal = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { register, handleSubmit, watch, errors } = useForm();
     const toast = useToast();
+    const auth = useAuth();
 
     const onSubmit = (data) => {
 
         try {
             console.log("data :", data)
+            console.log(auth.user.uid)
 
             // créer une entrée dans la base de données en passant les valeurs de siteName et siteLink
-            createSite (data);
+            createSite (data,auth.user.uid);
             toast({
                 title: "Success !",
                 description: "We've created your site.",
                 status: "success",
                 duration: 5000,
                 isClosable: true,
-            })
+                position: "bottom-right",
+            });
+            onClose()
 
         } catch (error) {
             console.log(error)
