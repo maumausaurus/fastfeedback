@@ -6,7 +6,8 @@ import {
   ChakraProvider,
   Container,
   Button,
-  Flex
+  Flex,
+  Link
 } from '@chakra-ui/react';
 import { CheckIcon } from '@chakra-ui/icons'
 import ModalSignIn from '../components/ModalSignIn'
@@ -20,36 +21,53 @@ const Home = () => {
 
   return (
     <div className="container">
-        <p>
-          Current user: {auth?.user ? auth.user.email : 'None'}
-        </p>
+      <head>
+        <title>
+          Fastfeedback
+        </title>
+      </head>
 
-          <Flex>
-            {auth?.user ? (
-              <Fragment></Fragment>
-            ) : (
-              <div>
-                <ModalSignIn />
-                <Button
-                  variant="solid"
-                  size="md"
-                  mr="20px"
-                  colorScheme="blackAlpha"
-                  onClick={(e) => auth.signinWithGithub()}>
-                  Sign in (GitHub)
+      <p>
+        Current user: {auth?.user ? auth.user.email : 'None'}
+      </p>
+
+      <Flex>
+        {auth?.user ? (
+          <Fragment></Fragment>
+        ) : (
+          <div>
+            <ModalSignIn />
+            <Button
+              variant="solid"
+              size="md"
+              mr="20px"
+              colorScheme="blackAlpha"
+              onClick={(e) => auth.signinWithGithub()}>
+              Sign in (GitHub)
                </Button>
-                <ModalSignUp />
-              </div>
-            )}
-          </Flex>
-          <Container>
-            {auth?.user ? (
-              <button onClick={(e) => auth.signout()}>Sign Out</button>
-            ) : (
-              <Fragment>
-              </Fragment>
-            )}
-          </Container>
+            <ModalSignUp />
+          </div>
+        )}
+      </Flex>
+      <Container>
+        {auth?.user ? (
+          <Fragment>
+                    <Link href="/dashboard">
+              <Button
+                colorScheme="blackAlpha"
+              >
+                Dashboard
+              </Button>
+            </Link>
+            
+            <button onClick={(e) => auth.signout()}>Sign Out</button>
+    
+          </Fragment>
+        ) : (
+          <Fragment>
+          </Fragment>
+        )}
+      </Container>
 
       <style jsx>{`
         .container {

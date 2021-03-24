@@ -2,6 +2,8 @@ import { useToast, Button, Container, FormControl, FormLabel, Input, FormErrorMe
 import { useForm } from "react-hook-form";
 // import { useState } from 'react';
 import firebase from '../lib/firebase';
+import { createSite } from '../db';
+//useAuth
 
 const firestore = firebase.firestore()
 console.log(firestore)
@@ -11,28 +13,27 @@ const AddSiteModal = () => {
     const { register, handleSubmit, watch, errors } = useForm();
     const toast = useToast();
 
-    const onSubmit = async (data) => {
-        //create site 
+    const onSubmit = (data) => {
+
         try {
             console.log("data :", data)
-            
+
             // créer une entrée dans la base de données en passant les valeurs de siteName et siteLink
-            const res = await firestore.collection('sites').add({
-                link: data.siteLink,
-                name: data.siteName
-            });
+            createSite (data);
             toast({
                 title: "Success !",
                 description: "We've created your site.",
                 status: "success",
                 duration: 5000,
                 isClosable: true,
-              })
+            })
 
         } catch (error) {
             console.log(error)
         }
     }
+
+
 
     return (
         <>

@@ -8,7 +8,8 @@ import {
   Input,
   Center,
   FormErrorMessage,
-  Button
+  Button,
+  useToast 
 } from '@chakra-ui/react';
 import { CheckIcon } from '@chakra-ui/icons'
 
@@ -22,6 +23,10 @@ const AuthForm = (props) => {
     const [confirmPassword, setConfirmPassword] = useState(undefined);
     const [logInError, setLogInError] = useState(undefined);
     const auth = useAuth();
+    const toast = useToast({  
+        position: 'bottom-right',
+        isClosable: true,
+    });
 
     // let [isSigningUp, setIsSigningUp] = useState(false);
 
@@ -33,7 +38,14 @@ const AuthForm = (props) => {
                     // Create account
                     auth.createUser(email, password);
                     setLogInError(undefined);
-                    closeModal();
+                    toast({
+                        title: "Success !",
+                        description: "We've created your account, you are now logged in.",
+                        status: "success",
+                        duration: 5000,
+                      });
+                     closeModal();
+                   
                 } else {
                     setLogInError(new Error('Les deux mots de passe ne sont pas identiques'));
                 }
@@ -46,6 +58,12 @@ const AuthForm = (props) => {
             }
         } catch (e) {
             setLogInError(e);
+            toast({
+                title: "Error",
+                description: e.message,
+                status: "success",
+                duration: 5000,
+              });
         }
     }
 
