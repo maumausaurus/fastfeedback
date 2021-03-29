@@ -19,7 +19,7 @@ const Dashboard = () => {
   const auth = useAuth();
 
   if (!auth.user) {
-      return "You can't access dashboard because you're not logeed in";
+      return "You can't access dashboard if you're not logged in";
   }
   return <EmptyState />
 };
