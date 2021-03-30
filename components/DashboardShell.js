@@ -1,69 +1,66 @@
-import React from 'react'
+import React from 'react';
 import {
-  ChakraProvider,
-  Link,
-  Flex,
-  Avatar,
-  Icon,
   Box,
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
   Heading,
-  Text,
-  Button
-} from '@chakra-ui/react'
-import { SettingsIcon } from '@chakra-ui/icons'
-import { useAuth } from '../lib/auth'
+  Button,
+  Flex,
+  Link,
+  Avatar,
+  Icon
+} from '@chakra-ui/react';
 
-const DashboardShell = ({children}) => {
-  const auth = useAuth();
+import { useAuth } from '../lib/auth';
+import AddSiteModal from './AddSiteModal';
 
-  return  <ChakraProvider resetCSS>
-    <Box>
-      <Flex justifyContent="space-between">
+const DashboardShell = ({ children }) => {
+  const { user, signout } = useAuth();
+
+  return (
+    <Box backgroundColor="gray.100" h="100vh">
+      <Flex backgroundColor="white" mb={16} w="full">
         <Flex
-          flexDirection="row"
-          justifyContent="flex-start"
-          display="flex"
           alignItems="center"
+          justifyContent="space-between"
+          pt={4}
+          pb={4}
+          maxW="1250px"
+          margin="0 auto"
+          w="full"
+          px={8}
+          h="70px"
         >
-          <SettingsIcon />
-          <Link m="10px" display="flex" justifyContent="flex-start">
-            Feedback
-          </Link>
-          <Link display="flex" m="10px">
-            Sites
-          </Link>
-        </Flex>
-        <Flex justifyContent="center" alignItems="center">
-          <Link mr="10px">Account</Link>
-          <Avatar size="sm" />
+          <Flex>
+            <Icon name="logo" size="24px" mr={8} />
+            <Link mr={4}>Sites</Link>
+            <Link>Feedback</Link>
+          </Flex>
+          <Flex justifyContent="center" alignItems="center">
+            {user && (
+              <Button variant="ghost" mr={2} onClick={() => signout()}>
+                Log Out
+              </Button>
+            )}
+            <Avatar size="sm" src={user?.photoUrl} />
+          </Flex>
         </Flex>
       </Flex>
-      <Flex
-        backgroundColor="#f5f9ff"
-        justifyContent="center"
-        flexDirection="column"
-      >
+      <Flex margin="0 auto" direction="column" maxW="1250px" px={8}>
         <Breadcrumb>
           <BreadcrumbItem>
             <BreadcrumbLink>Sites</BreadcrumbLink>
           </BreadcrumbItem>
-          <Heading>Sites</Heading>
         </Breadcrumb>
-        <Flex
-          backgroundColor="whiteAlpha.900"
-          justifyContent="center"
-          mb={10}
-          ml={5}
-          mr={5}
-        >
-        {children}
+        <Flex justifyContent="space-between">
+          <Heading mb={8}>My Sites</Heading>
+          <AddSiteModal>+ Add Site</AddSiteModal>
         </Flex>
+        {children}
       </Flex>
     </Box>
-  </ChakraProvider>
-}
+  );
+};
 
-export default DashboardShell
+export default DashboardShell;
