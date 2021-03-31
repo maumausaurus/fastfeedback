@@ -7,7 +7,6 @@ import { useAuth } from '../lib/auth';
 
 
 const firestore = firebase.firestore()
-console.log(firestore)
 
 const AddSiteModal = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();

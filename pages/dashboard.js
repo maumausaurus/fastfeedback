@@ -20,8 +20,7 @@ import useSWR from 'swr';
 
 const Dashboard = () => {
   const auth = useAuth();
-  const { data } = useSWR('/api/sites', fetcher);
-
+  //const { data } = useSWR('/api/sites', fetcher);
 
   if (!auth.user) {
       return "You can't access dashboard if you're not logged in";

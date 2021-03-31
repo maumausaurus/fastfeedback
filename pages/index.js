@@ -20,12 +20,6 @@ const Home = () => {
 
   return (
     <div className="container">
-      <head>
-        <title>
-          Fastfeedback
-        </title>
-      </head>
-
       <p>
         Current user: {auth?.user ? auth.user.email : 'None'}
       </p>
@@ -43,6 +37,7 @@ const Home = () => {
         </Head>
 
         {auth.user ? (
+
           <Button as="a" href="/dashboard">
             Go to dashboard
           </Button>
