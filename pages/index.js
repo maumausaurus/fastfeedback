@@ -36,6 +36,7 @@ const Home = () => {
           <title>Fast Feedback</title>
         </Head>
 
+
         {auth.user ? (
 
           <Button as="a" href="/dashboard">
