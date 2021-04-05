@@ -13,21 +13,42 @@ import ModalSignIn from '../components/ModalSignIn'
 import ModalSignUp from '../components/ModalSignUp'
 import EmptyState from '../components/EmptyState';
 import DashboardShell from '../components/DashboardShell';
-//import SiteTableSkeleton from '../components/SiteTableSkeleton';
 import useSWR from 'swr';
-
+import fetcher from '../utils/fetcher';
 
 
 const Dashboard = () => {
   const auth = useAuth();
-  const { data } = useSWR('/api/sites', fetcher);
+  const { data, ...rest } = useSWR('/api/sites', fetcher);
+
+  const sites = data?.sites
+  // const sitesNames = sites.map((site) => site.name)
+
+  console.log("sites:", sites)
 
   if (!auth.user) {
       return "You can't access dashboard if you're not logged in";
   }
-  return <DashboardShell>
-    <EmptyState />
-  </DashboardShell>
+
+  if (!sites) {
+    return (
+      <DashboardShell>
+        <EmptyState />
+      </DashboardShell>
+    );
+  }
+  return (
+    <DashboardShell>
+      {
+        sites.map((site) =>
+         <div> 
+           {site.name}
+           {site.link}
+         </div>
+        )
+      }
+    </DashboardShell>
+  );
 };
 
 export default Dashboard;
