@@ -4,6 +4,10 @@ import { useForm } from "react-hook-form";
 import firebase from '../lib/firebase';
 import { createSite } from '../db';
 import { useAuth } from '../lib/auth';
+import useSWR from 'swr';
+import fetcher from '../utils/fetcher';
+
+// import recoil state ?
 
 
 const firestore = firebase.firestore()
@@ -13,15 +17,16 @@ const AddSiteModal = () => {
     const { register, handleSubmit, watch, errors } = useForm();
     const toast = useToast();
     const auth = useAuth();
+    const { data, mutate, ...rest } = useSWR('/api/sites', fetcher);
 
-    const onSubmit = (data) => {
-
+    const onSubmit = async (formData) => {
         try {
-            console.log("data :", data)
+            console.log("formData :", formData)
             console.log(auth.user.uid)
+            console.log("data :", data)
 
             // créer une entrée dans la base de données en passant les valeurs de siteName et siteLink
-            createSite (data,auth.user.uid);
+            await createSite(formData, auth.user.uid);
             toast({
                 title: "Success !",
                 description: "We've created your site.",
@@ -30,7 +35,13 @@ const AddSiteModal = () => {
                 isClosable: true,
                 position: "bottom-right",
             });
-            onClose()
+            // refresh sites list to display the site we just added 
+            mutate();
+                
+            // mutate the local cache for sites 
+
+            onClose();
+
 
         } catch (error) {
             console.log(error)

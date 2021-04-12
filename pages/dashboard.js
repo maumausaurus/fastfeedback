@@ -41,7 +41,7 @@ const Dashboard = () => {
     <DashboardShell>
       {
         sites.map((site) =>
-         <div> 
+         <div>  
            {site.name}
            {site.link}
          </div>
