@@ -56,7 +56,7 @@ const AddSiteModal = () => {
                 onClick={onOpen}
                 colorScheme="purple"
             >
-                Add your first site
+                Add site
         </Button>
 
             <Modal isOpen={isOpen} onClose={onClose}>

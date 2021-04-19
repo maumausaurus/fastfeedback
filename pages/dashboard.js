@@ -6,7 +6,10 @@ import {
   ChakraProvider,
   Container,
   Button,
-  Flex
+  Flex, 
+  Box, 
+  Input, 
+  IconButton, 
 } from '@chakra-ui/react';
 import { CheckIcon } from '@chakra-ui/icons'
 import ModalSignIn from '../components/ModalSignIn'
@@ -15,6 +18,9 @@ import EmptyState from '../components/EmptyState';
 import DashboardShell from '../components/DashboardShell';
 import useSWR from 'swr';
 import fetcher from '../utils/fetcher';
+import SiteTable from '../components/SiteTable';
+import { SearchIcon } from '@chakra-ui/icons'
+
 
 
 const Dashboard = () => {
@@ -39,14 +45,19 @@ const Dashboard = () => {
   }
   return (
     <DashboardShell>
-      {
-        sites.map((site) =>
-         <div>  
-           {site.name}
-           {site.link}
-         </div>
-        )
-      }
+      <Flex alignItems="flex-end" justifyContent="flex-end" mb="10px">
+      <Box display="flex">
+        <Input placeholder="search..." mr="5px"/>
+        <IconButton
+          aria-label="icon"
+          icon={<SearchIcon />}
+          size="md"
+          colorScheme="purple"
+        />
+      </Box>
+    </Flex>
+
+      <SiteTable sites={sites} />
     </DashboardShell>
   );
 };
