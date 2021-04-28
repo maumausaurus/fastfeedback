@@ -19,16 +19,27 @@ import DashboardShell from '../components/DashboardShell';
 import useSWR from 'swr';
 import fetcher from '../utils/fetcher';
 import SiteTable from '../components/SiteTable';
-import { SearchIcon } from '@chakra-ui/icons'
-
+import SearchBar from '../components/SearchBar';
 
 
 const Dashboard = () => {
   const auth = useAuth();
   const { data, ...rest } = useSWR('/api/sites', fetcher);
+  const [searchContent, setSearchContent] = useState('');
 
   const sites = data?.sites
+  console.log("sites:", sites)
+
   // const sitesNames = sites.map((site) => site.name)
+
+  const filteredSites = sites.filter((site) => {
+    // afficher tous les sites quand la recherche n'est pas utilisée
+    if (searchContent === '') {
+      return true
+    }  
+    // sinon afficher uniquement les sites qui matchent la recherche 
+    return site.name.toLowerCase === searchContent.toLowerCase
+  }); 
 
   console.log("sites:", sites)
 
@@ -45,19 +56,10 @@ const Dashboard = () => {
   }
   return (
     <DashboardShell>
-      <Flex alignItems="flex-end" justifyContent="flex-end" mb="10px">
-      <Box display="flex">
-        <Input placeholder="search..." mr="5px"/>
-        <IconButton
-          aria-label="icon"
-          icon={<SearchIcon />}
-          size="md"
-          colorScheme="purple"
-        />
-      </Box>
-    </Flex>
-
-      <SiteTable sites={sites} />
+      <SearchBar 
+        onSearchContentUpdate={(searchContent)=> setSearchContent(searchContent)}
+      />
+      <SiteTable sites={filteredSites} />
     </DashboardShell>
   );
 };
